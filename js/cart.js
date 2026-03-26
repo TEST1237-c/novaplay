@@ -77,10 +77,34 @@ function renderDrawerItems() {
   const btnPaypal = document.getElementById("btn-paypal");
 
   if (btnStripe) {
-    btnStripe.onclick = () => {
-      const url = cart.length === 1 ? cart[0].stripe : "#";
-      if (url && url !== "#") window.open(url, "_blank");
-      else showToast("Configure le lien Stripe dans js/products.js");
+    btnStripe.onclick = async () => {
+      if (cart.length === 0) return showToast("Ajoute un produit au panier d'abord.");
+      if (cart.length === 1 && cart[0].stripe && cart[0].stripe !== "#") {
+        window.open(cart[0].stripe, "_blank");
+        return;
+      }
+
+      // Si pas de lien Stripe fixé, utiliser l'API (requiert back-end).
+      // Exemple Node.js : POST /create-checkout-session avec productId / price.
+      try {
+        const session = await fetch("/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            products: cart.map(p => ({ id: p.id, name: p.name, amount: Math.round(p.price * 100) }))
+          })
+        }).then(r => r.json());
+
+        if (session.url) {
+          window.location = session.url;
+        } else {
+          showToast("Impossible de créer la session Stripe. Vérifie la console.");
+          console.error(session);
+        }
+      } catch (e) {
+        showToast("Erreur de paiement Stripe (backend requis).");
+        console.error(e);
+      }
     };
   }
   if (btnPaypal) {
@@ -91,6 +115,37 @@ function renderDrawerItems() {
     };
   }
 }
+
+// Achat immédiat (utilise Stripe) 
+async function buyNow(id) {
+  const p = PRODUCTS.find((x) => x.id === id);
+  if (!p) return showToast("Produit introuvable.");
+
+  if (p.stripe && p.stripe !== "#") {
+    window.open(p.stripe, "_blank");
+    return;
+  }
+
+  // Fallback vers endpoint backend
+  try {
+    const session = await fetch("/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product: { id: p.id, name: p.name, amount: Math.round(p.price * 100) } })
+    }).then((r) => r.json());
+
+    if (session.url) {
+      window.location = session.url;
+    } else {
+      showToast("Impossible de créer la session Stripe. Vérifie la console.");
+      console.error(session);
+    }
+  } catch (e) {
+    showToast("Erreur de paiement Stripe (backend requis).");
+    console.error(e);
+  }
+}
+
 
 /* ── Ouvrir / fermer le drawer ── */
 function openDrawer() {
