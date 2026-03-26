@@ -402,7 +402,10 @@
         </div>
         <div class="pcard-bottom">
           <div class="pcard-price">${p.price.toFixed(2).replace(".", ",")} €<small>paiement unique</small></div>
-          <button class="btn-add" onclick="addToCart('${p.id}')">Ajouter</button>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button class="btn-add" onclick="addToCart('${p.id}')">Ajouter</button>
+            <button class="btn-add" style="background: #13b13a;" onclick="buyNow('${p.id}')">Acheter</button>
+          </div>
         </div>
       </div>
     `).join("");
