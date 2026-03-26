@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novaplay — Boutique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── PAGE : BOUTIQUE ── */
+
+    .shop-hero {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 110px 2rem 80px;
+      background: linear-gradient(180deg, rgba(124,92,252,0.08) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(124,92,252,0.15);
+    }
+    .shop-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(124,92,252,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .shop-hero h1 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      letter-spacing: -0.03em; margin-bottom: 16px;
+      animation: fadeInDown 0.8s ease-out;
+    }
+    .shop-hero h1 span {
+      background: linear-gradient(120deg, #a78bfa 0%, #7c5cfc 50%, #a78bfa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .shop-hero p { color: var(--muted); font-size: 1rem; font-weight: 300; margin-bottom: 12px; animation: fadeInUp 0.8s ease-out 0.1s backwards; }
+    .shop-hero-info {
+      font-size: 0.85rem; color: var(--accent2);
+      margin-top: 12px; display: inline-block;
+      background: rgba(124,92,252,0.1); border: 1px solid rgba(124,92,252,0.3);
+      border-radius: 20px; padding: 8px 16px;
+      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+
+    /* Filtres */
+    .filters {
+      position: sticky; top: 64px; z-index: 50;
+      max-width: 1060px; margin: 0 auto;
+      padding: 16px 2rem;
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      background: rgba(8,8,15,0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .filter-btn {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 24px; padding: 8px 18px;
+      font-size: 0.82rem; font-weight: 500; color: var(--muted);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: 'DM Sans', sans-serif;
+      position: relative; overflow: hidden;
+    }
+    .filter-btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: translateX(-100%);
+    }
+    .filter-btn:hover::before { transform: translateX(100%); transition: 0.5s; }
+    .filter-btn:hover {
+      background: rgba(124,92,252,0.2);
+      border-color: rgba(124,92,252,0.6);
+      color: var(--accent2);
+      transform: translateY(-2px);
+    }
+    .filter-btn.active {
+      background: linear-gradient(90deg, rgba(124,92,252,0.3), rgba(124,92,252,0.15));
+      border-color: var(--accent2);
+      color: var(--accent2);
+      box-shadow: 0 0 12px rgba(124,92,252,0.3);
+    }
+    .filter-spacer { flex: 1; }
+    #product-count { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+
+    /* Grille produits */
+    .shop-wrap {
+      position: relative; z-index: 1;
+      max-width: 1060px; margin: 0 auto;
+      padding: 0 2rem 100px;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 24px;
+      padding-top: 20px;
+    }
+
+    /* Carte produit */
+    .pcard {
+      position: relative; overflow: hidden;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 18px; padding: 2rem 1.5rem;
+      display: flex; flex-direction: column; gap: 14px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fadeInScale 0.6s ease-out backwards;
+    }
+    .pcard:nth-child(1) { animation-delay: 0.05s; }
+    .pcard:nth-child(2) { animation-delay: 0.1s; }
+    .pcard:nth-child(3) { animation-delay: 0.15s; }
+    .pcard:hover {
+      border-color: rgba(124,92,252,0.7);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(124,92,252,0.15);
+    }
+    .pcard::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at top right, rgba(124,92,252,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .pcard-glow {
+      position: absolute; top: -80px; right: -80px;
+      width: 240px; height: 240px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(124,92,252,0.12) 0%, transparent 70%);
+      pointer-events: none;
+      transition: all 0.4s ease;
+    }
+    .pcard:hover .pcard-glow {
+      top: -40px; right: -40px;
+      background: radial-gradient(ellipse, rgba(124,92,252,0.2) 0%, transparent 70%);
+    }
+
+    .pcard-badge {
+      position: absolute; top: 18px; right: 18px;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      border-radius: 8px; padding: 6px 12px;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; color: #fff;
+      box-shadow: 0 4px 12px rgba(124,92,252,0.3);
+      animation: bounce 0.6s ease-out;
+    }
+    @keyframes bounce {
+      0% { transform: scale(0) rotate(-45deg); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    .pcard-icon {
+      width: 60px; height: 60px; border-radius: 16px;
+      background: rgba(124,92,252,0.15); border: 1.5px solid rgba(124,92,252,0.3);
+      display: flex; align-items: center; justify-content: center; font-size: 28px;
+      transition: all 0.3s ease;
+    }
+    .pcard:hover .pcard-icon {
+      background: rgba(124,92,252,0.25);
+      border-color: rgba(124,92,252,0.5);
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .pcard-cat {
+      font-size: 0.7rem; color: var(--accent2); text-transform: uppercase;
+      letter-spacing: 0.12em; font-weight: 600;
+    }
+    .pcard-name {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem;
+      line-height: 1.2; color: var(--text);
+    }
+    .pcard-desc {
+      font-size: 0.85rem; color: var(--muted); line-height: 1.7;
+      font-weight: 300; flex: 1;
+    }
+
+    .pcard-features {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-top: 6px;
+    }
+    .pcard-feat {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; color: #d0d0e8;
+      transition: transform 0.2s ease;
+    }
+    .pcard:hover .pcard-feat {
+      transform: translateX(4px);
+    }
+    .pcard-feat::before {
+      content: '✓'; width: 18px; height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(124,92,252,0.3), rgba(124,92,252,0.15));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.7rem; color: var(--accent2); font-weight: bold;
+    }
+
+    .pcard-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .pcard-price {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem;
+      background: linear-gradient(90deg, #a78bfa, #7c5cfc);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .pcard-price small {
+      font-size: 0.7rem; color: var(--muted);
+      font-weight: 400; font-family: 'DM Sans', sans-serif; margin-left: 6px;
+      display: block;
+    }
+
+    .btn-add {
+      background: linear-gradient(135deg, var(--accent), #6a4de0);
+      color: #fff; border: none;
+      border-radius: 12px; padding: 12px 20px;
+      font-size: 0.85rem; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative; overflow: hidden;
+    }
+    .btn-add::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-100%);
+    }
+    .btn-add:hover::before { transform: translateX(100%); transition: 0.5s; }
+    .btn-add:hover {
+      background: linear-gradient(135deg, #6a4de0, var(--accent));
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(124,92,252,0.4);
+    }
+    .btn-add:active { transform: translateY(0) scale(0.98); }
+
+    /* Vide */
+    .empty-state {
+      text-align: center; padding: 80px 20px;
+      color: var(--muted); font-size: 0.95rem; grid-column: 1/-1;
+    }
+    .empty-state .big {
+      font-size: 4rem; margin-bottom: 16px;
+      animation: bounce 1s ease infinite;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 640px) {
+      .product-grid { grid-template-columns: 1fr; gap: 18px; }
+      .filter-spacer { display: none; }
+      .pcard { padding: 1.5rem; }
+      .shop-hero { padding: 70px 1.5rem 50px; }
+      .filters { padding: 12px 1.5rem; }
+    }
+  </style>
+  </style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<!-- ── Navigation ── -->
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">⚡</div>
+    Nova<em>play</em>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Accueil</a>
+    <a href="boutique.html" class="nav-link active">Boutique</a>
+  </div>
+  <div class="nav-right">
+    <div class="badge-online"><strong>● En ligne</strong></div>
+    <button id="cart-btn" onclick="openDrawer()">🛒 Panier <span id="cart-count">0</span></button>
+  </div>
+</nav>
+
+<!-- ── Hero boutique ── -->
+<section class="shop-hero">
+  <h1>Notre <span>boutique</span></h1>
+  <p>Tous nos produits, livrés instantanément après paiement.</p>
+  <div class="shop-hero-info">✨ Paiement sécurisé Stripe & PayPal</div>
+</section>
+
+<!-- ── Filtres ── -->
+<div class="filters" id="filters-bar">
+  <!-- généré par JS -->
+</div>
+
+<!-- ── Grille ── -->
+<div class="shop-wrap">
+  <div class="section-label">Produits disponibles &nbsp;<span id="product-count"></span></div>
+  <div class="product-grid" id="product-grid">
+    <!-- généré par JS -->
+  </div>
+</div>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-col">
+      <h3>🛍️ Boutique</h3>
+      <a href="boutique.html">Tous les produits</a>
+      <a href="boutique.html#bot-discord">Bots Discord</a>
+      <a href="boutique.html">Templates Web</a>
+      <a href="boutique.html">Ressources</a>
+    </div>
+    <div class="footer-col">
+      <h3>ℹ️ À propos</h3>
+      <a href="index.html">Retour à l'accueil</a>
+      <p>Plateforme de vente de produits numériques premium pour Discord.</p>
+    </div>
+    <div class="footer-col">
+      <h3>💬 Support</h3>
+      <a href="https://discord.gg/2RXvXqWHbt" target="_blank">Discord Community</a>
+      <a href="#">Email: support@novaplay.fr</a>
+      <p>Support 7j/7 disponible directement sur Discord.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 <strong>Novaplay</strong> — Tous droits réservés &nbsp;·&nbsp; Plateforme de vente officielle
+  </div>
+</footer>
+
+<!-- ── Panier (drawer) ── -->
+<div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h2>🛒 Mon panier</h2>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-items" id="drawer-items"></div>
+  <div class="drawer-footer" id="drawer-footer" style="display:none">
+    <div class="drawer-total"><span>Total</span><strong id="total-price">0,00 €</strong></div>
+    <button class="btn-stripe" id="btn-stripe">💳 Payer avec Stripe</button>
+    <div class="or-sep">ou</div>
+    <button class="btn-paypal" id="btn-paypal">🅿️ Payer avec PayPal</button>
+    <div class="secure-note">🔒 Paiement 100 % sécurisé</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script>
+  /* ── Filtres & rendu de la grille ── */
+  let activeFilter = "Tous";
+
+  function buildFilters() {
+    const cats = ["Tous", ...new Set(PRODUCTS.map(p => p.cat))];
+    const bar  = document.getElementById("filters-bar");
+    bar.innerHTML = cats.map(c =>
+      `<button class="filter-btn${c === activeFilter ? ' active' : ''}" onclick="setFilter('${c}')">${c}</button>`
+    ).join("") + `<div class="filter-spacer"></div><span id="product-count"></span>`;
+    updateCount();
+  }
+
+  function setFilter(cat) {
+    activeFilter = cat;
+    buildFilters();
+    renderGrid();
+  }
+
+  function updateCount() {
+    const list = activeFilter === "Tous" ? PRODUCTS : PRODUCTS.filter(p => p.cat === activeFilter);
+    const el = document.getElementById("product-count");
+    if (el) el.textContent = "(" + list.length + " produit" + (list.length > 1 ? "s" : "") + ")";
+  }
+
+  function renderGrid() {
+    const list = activeFilter === "Tous" ? PRODUCTS : PRODUCTS.filter(p => p.cat === activeFilter);
+    const grid = document.getElementById("product-grid");
+
+    if (list.length === 0) {
+      grid.innerHTML = `<div class="empty-state"><div class="big">📦</div>Aucun produit dans cette catégorie.</div>`;
+      return;
+    }
+
+    grid.innerHTML = list.map(p => `
+      <div class="pcard">
+        <div class="pcard-glow"></div>
+        ${p.badge ? `<div class="pcard-badge">${p.badge}</div>` : ""}
+        <div class="pcard-icon">${p.icon}</div>
+        <div class="pcard-cat">${p.cat}</div>
+        <div class="pcard-name">${p.name}</div>
+        <div class="pcard-desc">${p.desc}</div>
+        <div class="pcard-features">
+          ${p.features.map(f => `<div class="pcard-feat">${f}</div>`).join("")}
+        </div>
+        <div class="pcard-bottom">
+          <div class="pcard-price">${p.price.toFixed(2).replace(".", ",")} €<small>paiement unique</small></div>
+          <button class="btn-add" onclick="addToCart('${p.id}')">Ajouter</button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  /* Init */
+  buildFilters();
+  renderGrid();
+</script>
+</body>
+</html>

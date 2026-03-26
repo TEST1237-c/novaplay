@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novaplay — Accueil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── PAGE : ACCUEIL ── */
+
+    /* Hero */
+    .hero {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 110px 2rem 80px;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(124,92,252,0.1); border: 1px solid rgba(124,92,252,0.3);
+      border-radius: 20px; padding: 6px 16px; margin-bottom: 28px;
+      font-size: 0.76rem; color: var(--accent2);
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 1.0; letter-spacing: -0.03em;
+      margin-bottom: 22px;
+    }
+    .hero h1 .gr {
+      background: linear-gradient(100deg, #a78bfa 0%, #7c5cfc 50%, #c4b5fd 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      max-width: 500px; margin: 0 auto 42px;
+      font-size: 1.05rem; color: var(--muted); line-height: 1.75; font-weight: 300;
+    }
+    .hero-actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+    /* Stats band */
+    .stats-band {
+      position: relative; z-index: 1;
+      max-width: 1060px; margin: 0 auto;
+      padding: 0 2rem 80px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border2); border-radius: 16px;
+      padding: 28px 40px; text-align: center;
+    }
+    .stat-value {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 2.2rem; letter-spacing: -0.02em; margin-bottom: 6px;
+      background: linear-gradient(90deg, #a78bfa, #7c5cfc);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); }
+
+    /* Features */
+    .features-section {
+      position: relative; z-index: 1;
+      max-width: 1060px; margin: 0 auto;
+      padding: 0 2rem 90px;
+    }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .feature-card {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 14px; padding: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .feature-card:hover { border-color: rgba(124,92,252,0.45); transform: translateY(-2px); }
+    .feature-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      background: rgba(124,92,252,0.12); border: 1px solid rgba(124,92,252,0.22);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 14px;
+    }
+    .feature-title {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.95rem; margin-bottom: 7px;
+    }
+    .feature-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    /* CTA band */
+    .cta-band {
+      position: relative; z-index: 1;
+      max-width: 900px; margin: 0 auto;
+      padding: 0 2rem 100px;
+    }
+    .cta-inner {
+      background: var(--surface);
+      border: 1px solid rgba(124,92,252,0.3);
+      border-radius: 20px;
+      padding: 56px 48px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-glow {
+      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 400px; height: 200px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(124,92,252,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-inner h2 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      margin-bottom: 14px; letter-spacing: -0.02em;
+    }
+    .cta-inner p { color: var(--muted); font-size: 0.95rem; margin-bottom: 30px; font-weight: 300; }
+
+    @media (max-width: 640px) {
+      .stats-band { grid-template-columns: 1fr; }
+      .cta-inner { padding: 36px 24px; }
+    }
+
+    /* Produits populaires */
+    .popular-products {
+      position: relative; z-index: 1;
+      max-width: 1060px; margin: 0 auto;
+      padding: 0 2rem 80px;
+    }
+    .popular-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .popular-card {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 14px; padding: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+    }
+    .popular-card:hover { border-color: rgba(124,92,252,0.55); transform: translateY(-3px); }
+    .popular-badge {
+      position: absolute; top: 14px; right: 14px;
+      background: linear-gradient(90deg, var(--accent), #a78bfa);
+      border-radius: 6px; padding: 3px 9px;
+      font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; color: #fff;
+    }
+    .popular-icon {
+      width: 50px; height: 50px; border-radius: 12px;
+      background: rgba(124,92,252,0.12); border: 1px solid rgba(124,92,252,0.22);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 14px;
+    }
+    .popular-cat { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .popular-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+    .popular-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    .popular-price { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; margin-top: 12px; color: var(--accent2); }
+  
+  </style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<!-- ── Navigation ── -->
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">⚡</div>
+    Nova<em>play</em>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link active">Accueil</a>
+    <a href="boutique.html" class="nav-link">Boutique</a>
+  </div>
+  <div class="nav-right">
+    <div class="badge-online"><strong>● En ligne</strong></div>
+    <button id="cart-btn" onclick="openDrawer()">🛒 Panier <span id="cart-count">0</span></button>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-eyebrow"><span class="pulse"></span>Boutique officielle</div>
+  <h1>Bienvenue sur<br><span class="gr">Novaplay</span></h1>
+  <p class="hero-sub">Des outils premium pour propulser votre serveur Discord. Livraison instantanée, paiement 100 % sécurisé.</p>
+  <div class="hero-actions">
+    <a href="boutique.html" class="btn btn-primary">Voir la boutique &rarr;</a>
+    <a href="#features" class="btn btn-secondary">En savoir plus</a>
+  </div>
+</section>
+
+<!-- ── Stats ── -->
+<div class="stats-band">
+  <div class="stat"><div class="stat-value">500+</div><div class="stat-label">Clients satisfaits</div></div>
+  <div class="stat"><div class="stat-value">24/7</div><div class="stat-label">Support disponible</div></div>
+  <div class="stat"><div class="stat-value">9</div><div class="stat-label">Produits premium</div></div>
+</div>
+
+<!-- ── Features ── -->
+<section class="features-section" id="features">
+  <div class="section-label">Pourquoi Novaplay</div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Livraison instantanée</div>
+      <div class="feature-desc">Reçois ton produit par email dans les secondes qui suivent le paiement.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <div class="feature-title">Paiement sécurisé</div>
+      <div class="feature-desc">Stripe & PayPal certifiés PCI DSS. Tes données bancaires sont protégées.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔧</div>
+      <div class="feature-title">Support dédié</div>
+      <div class="feature-desc">Une question ? Notre équipe est disponible 7j/7 directement sur Discord.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <div class="feature-title">Mises à jour gratuites</div>
+      <div class="feature-desc">Tous nos produits sont mis à jour régulièrement, sans frais supplémentaires.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Produits populaires ── -->
+<section class="popular-products">
+  <div class="section-label">Produits populaires</div>
+  <div class="popular-grid" id="popular-grid">
+    <div class="popular-card">
+      <div class="popular-badge">Populaire</div>
+      <div class="popular-icon">🤖</div>
+      <div class="popular-cat">Bot Discord</div>
+      <div class="popular-name">Bot Modération Pro</div>
+      <div class="popular-desc">Bot puissant de modération avec IA intégrée pour sécuriser votre serveur.</div>
+      <div class="popular-price">9,99 €</div>
+    </div>
+    <div class="popular-card">
+      <div class="popular-badge">Nouveau</div>
+      <div class="popular-icon">🎵</div>
+      <div class="popular-cat">Bot Discord</div>
+      <div class="popular-name">Bot Musique Pro</div>
+      <div class="popular-desc">Lecteur multi-sources avec file d'attente illimitée et panel web.</div>
+      <div class="popular-price">14,99 €</div>
+    </div>
+    <div class="popular-card">
+      <div class="popular-badge">Premium</div>
+      <div class="popular-icon">🌐</div>
+      <div class="popular-cat">Template Web</div>
+      <div class="popular-name">Template Site Pro</div>
+      <div class="popular-desc">Template site vitrine moderne et responsive pour votre business.</div>
+      <div class="popular-price">24,99 €</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-band">
+  <div class="cta-inner">
+    <div class="cta-glow"></div>
+    <h2>Prêt à booster ton serveur ?</h2>
+    <p>Découvre tous nos produits et choisis celui qui te convient.</p>
+    <a href="boutique.html" class="btn btn-primary">Voir la boutique &rarr;</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-col">
+      <h3>🛍️ Boutique</h3>
+      <a href="boutique.html">Tous les produits</a>
+      <a href="boutique.html#bot-discord">Bots Discord</a>
+      <a href="boutique.html">Templates Web</a>
+      <a href="boutique.html">Ressources</a>
+    </div>
+    <div class="footer-col">
+      <h3>ℹ️ À propos</h3>
+      <a href="#features">Nos avantages</a>
+      <p>Plateforme de vente de produits numériques premium pour Discord.</p>
+    </div>
+    <div class="footer-col">
+      <h3>💬 Support</h3>
+      <a href="https://discord.gg/2RXvXqWHbt" target="_blank">Discord Community</a>
+      <a href="#">Email: support@novaplay.fr</a>
+      <p>Support 7j/7 disponible directement sur Discord.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 <strong>Novaplay</strong> — Tous droits réservés &nbsp;·&nbsp; Plateforme de vente officielle
+  </div>
+</footer>
+
+<!-- ── Panier (drawer) ── -->
+<div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h2>🛒 Mon panier</h2>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-items" id="drawer-items"></div>
+  <div class="drawer-footer" id="drawer-footer" style="display:none">
+    <div class="drawer-total"><span>Total</span><strong id="total-price">0,00 €</strong></div>
+    <button class="btn-stripe" id="btn-stripe">💳 Payer avec Stripe</button>
+    <div class="or-sep">ou</div>
+    <button class="btn-paypal" id="btn-paypal">🅿️ Payer avec PayPal</button>
+    <div class="secure-note">🔒 Paiement 100 % sécurisé</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+</body>
+</html>
